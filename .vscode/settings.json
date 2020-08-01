@@ -1,0 +1,8 @@
+{
+    "prettier.arrowParens": "avoid",
+    "prettier.jsxSingleQuote": true,
+    "prettier.proseWrap": "always",
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "none",
+    "prettier.useTabs": true
+}

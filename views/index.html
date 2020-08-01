@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+	<!--<![endif]-->
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Note App</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="./beautify.css" />
+	</head>
+
+	<body id="editTodo">
+		<!--[if lt IE 7]>
+			<p class="browsehappy">
+				You are using an <strong>outdated</strong> browser. Please
+				<a href="#">upgrade your browser</a> to improve your experience.
+			</p>
+		<![endif]-->
+		<!-- <div class="menu" id="menu">
+        <i class="fa fa-bars"></i>
+    </div> -->
+		<nav class="nav" id="main">
+			<div class="container">
+				<div class="nav-content">
+					<div class="logo-box">
+						<a href="#" class="logo" id="home">Note Api</a>
+					</div>
+					<ul class="nav-link">
+						<li>
+							<a href="/work" style="color: #fff;">
+								work
+							</a>
+						</li>
+						<li>
+							<a href="/study" style="color: #fff;">
+								Study
+							</a>
+						</li>
+						<li>
+							<a href="/personal" style="color: #fff;">
+								Personal
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- <button href="#" class="clear" id="clear">Clear</button> -->
+		<div class="form-container">
+			<div class="container">
+				<form action="/" class="form-tag" id="form" method="POST">
+					<div class="form-group">
+						<textarea
+							name="note"
+							cols="70"
+							rows="7"
+							id="content"
+							placeholder="enter todo"
+						></textarea>
+					</div>
+					<div class="select-btn">
+						<div class="form-group select-option">
+							<select name="topic" id="topic">
+								<option value="select" disabled selected>Select topic</option>
+								<option value="personal">Personal</option>
+								<option value="study">Study</option>
+								<option value="work">work</option>
+							</select>
+						</div>
+						<button type="submit" class="btn add-btn" id="add-button" disabled>
+							Add
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="message">
+			<div class="container">
+				<h2>About the app</h2>
+				<p>
+					This app was built using vanilla nodejs. No frameworks like express or
+					hapi was used. You can only add note when you have typed more than 20
+					characters long and selected topic.
+				</p>
+				<p>
+					Clicking one of the nav links will return JSON after you might have
+					added notes
+				</p>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<p>
+					Copyright <span id="get-year">2020</span> | Coded by
+					<a href="twitter.com/developer_tolu" style="color: #fff;"
+						>Folorunso Tolulope</a
+					>
+				</p>
+			</div>
+		</footer>
+		<!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
+		etnecessitatibus quod. Possimus saepe beatae nihil tempora officiis,
+		deleniti sapiente atque cum modi consequatur, ea libero hic dolorum Lorem
+		ipsum dolor sit amet consectetur adipisicing elit. Ipsam etnecessitatibus
+		quod. Possimus saepe beatae nihil tempora officiis, deleniti sapiente atque
+		cum modi consequatur, ea libero hic dolorum accusamus nostrum. accusamus
+		nostrum. -->
+
+		<script>
+			const addBtn = document.getElementById('add-button');
+			const content = document.getElementById('content');
+			const topic = document.getElementById('topic');
+
+			const addNote = evt => {
+				if (
+					content.value !== '' &&
+					content.value.length > 2 &&
+					topic.value !== 'select'
+				) {
+					addBtn.disabled = false;
+					addBtn.style.background = '#0eadf4';
+					addBtn.style.cursor = 'pointer';
+				} else {
+					evt.preventDefault();
+					addBtn.disabled = true;
+					addBtn.style.background = 'gray';
+				}
+			};
+			topic.addEventListener('change', addNote);
+			content.addEventListener('input', addNote);
+
+			addBtn.addEventListener('click', () => {
+				alert('Note added successfully');
+			});
+		</script>
+	</body>
+</html>
