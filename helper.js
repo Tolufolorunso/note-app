@@ -1,4 +1,5 @@
 const fs = require('fs');
+//the only external module
 const fsPath = require('fs-path');
 const { serveStaticFile } = require('./service.js');
 
@@ -7,6 +8,7 @@ module.exports.helper = (req, res, newData, topic) => {
 	fs.open(`./${topic}/${topic}.json`, (error, fd) => {
 		if (error) {
 			if (error.code === 'ENOENT') {
+				//To be able to create folder and file
 				fsPath.writeFileSync(`./${topic}/${topic}.json`, JSON.stringify([]));
 				return;
 			}
@@ -15,6 +17,7 @@ module.exports.helper = (req, res, newData, topic) => {
 		return;
 	});
 
+	//Set timeout was used to let fs.open to finish creating folder with json file and insert []
 	setTimeout(function () {
 		try {
 			const data = fs.readFileSync(`./${topic}/${topic}.json`, 'utf8');
@@ -29,7 +32,7 @@ module.exports.helper = (req, res, newData, topic) => {
 			JSON.stringify(oldFile),
 			(error, file) => {
 				if (error) {
-					//   throw error;
+					throw Error;
 					console.log('error 2');
 				}
 				// res.statusCode = 200;
