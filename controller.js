@@ -1,6 +1,7 @@
 const http = require('http');
 const { parse } = require('querystring');
 
+const { homeApi, crudOperation } = require('./routes/homeApi.js');
 const { home } = require('./routes/home.js');
 const { work } = require('./routes/work.js');
 const { study } = require('./routes/study.js');
@@ -14,28 +15,37 @@ module.exports = http.createServer((req, res) => {
 		home(req, res);
 	} else if (req.url == '/' && req.method === 'POST') {
 		//recieving data as buffer from the form
-		var body = '';
+		let body = [];
 		req.on('data', chunk => {
-			body += chunk.toString();
+			body.push(chunk);
 		});
 
 		req.on('end', () => {
 			//parse the data
-			const dataObj = parse(body);
-			const newData = {
-				note: dataObj.note,
-				topic: dataObj.topic
-			};
+			body = Buffer.concat(body).toString();
+			body = JSON.parse(body);
+			const { topic, note } = body;
 
-			if (dataObj.topic === 'work') {
+			const newData = {
+				note: note,
+				topic: topic,
+				id: topic + '-' + Math.floor(Math.random() * 57876547 + 1)
+			};
+			console.log(newData);
+
+			if (newData.topic === 'work') {
 				helper(req, res, newData, 'work');
-			} else if (dataObj.topic === 'study') {
+			} else if (newData.topic === 'study') {
 				helper(req, res, newData, 'study');
-			} else if (dataObj.topic === 'personal') {
+			} else if (newData.topic === 'personal') {
 				helper(req, res, newData, 'personal');
 			}
 		});
 		// home(req, res);
+	} else if (req.url == '/api/home' && req.method === 'GET') {
+		homeApi(req, res);
+	} else if (req.url == '/api/notes' && req.method === 'POST') {
+		crudOperation(req, res);
 	} else if (req.url == '/work' && req.method === 'GET') {
 		work(req, res);
 	} else if (req.url == '/study' && req.method === 'GET') {

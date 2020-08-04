@@ -33,17 +33,17 @@
 					</div>
 					<ul class="nav-link">
 						<li>
-							<a href="/work" style="color: #fff;">
+							<a href="#work" style="color: #fff;">
 								work
 							</a>
 						</li>
 						<li>
-							<a href="/study" style="color: #fff;">
+							<a href="#study" style="color: #fff;">
 								Study
 							</a>
 						</li>
 						<li>
-							<a href="/personal" style="color: #fff;">
+							<a href="#personal" style="color: #fff;">
 								Personal
 							</a>
 						</li>
@@ -54,14 +54,14 @@
 		<!-- <button href="#" class="clear" id="clear">Clear</button> -->
 		<div class="form-container">
 			<div class="container">
-				<form action="/" class="form-tag" id="form" method="POST">
+				<form class="form-tag" id="form">
 					<div class="form-group">
 						<textarea
 							name="note"
 							cols="70"
 							rows="7"
-							id="content"
-							placeholder="enter todo"
+							id="note"
+							placeholder="Your Note"
 						></textarea>
 					</div>
 					<div class="select-btn">
@@ -78,6 +78,15 @@
 						</button>
 					</div>
 				</form>
+			</div>
+		</div>
+
+		<div class="output-container">
+			<div class="container">
+				<div class="output-flex">
+					<p>Write notes</p>
+					<div id="output"></div>
+				</div>
 			</div>
 		</div>
 
@@ -106,6 +115,12 @@
 				</p>
 			</div>
 		</footer>
+
+		<div class="alert">
+			<div class="container">
+				<div class="alert-box" id="alert-box"></div>
+			</div>
+		</div>
 		<!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
 		etnecessitatibus quod. Possimus saepe beatae nihil tempora officiis,
 		deleniti sapiente atque cum modi consequatur, ea libero hic dolorum Lorem
@@ -115,14 +130,41 @@
 		nostrum. -->
 
 		<script>
+			const form = document.getElementById('form');
 			const addBtn = document.getElementById('add-button');
-			const content = document.getElementById('content');
+			const content = document.getElementById('note');
 			const topic = document.getElementById('topic');
+			const alertBox = document.getElementById('alert-box');
+
+			form.addEventListener('submit', evt => {
+				evt.preventDefault();
+				const body = {
+					note: note.value,
+					topic: topic.value
+				};
+
+				const data = sendRequestToServer(
+					`http://localhost:3000/`,
+					body,
+					'POST'
+				);
+				data
+					.then(response => {
+						displayNotes(response);
+						showMessage('Note added successfully', 'success');
+					})
+					.catch(error => {
+						console.log(error);
+					});
+				note.value = '';
+				addBtn.disabled = true;
+				addBtn.style.background = 'gray';
+			});
 
 			const addNote = evt => {
 				if (
 					content.value !== '' &&
-					content.value.length > 20 &&
+					content.value.length > 2 &&
 					topic.value !== 'select'
 				) {
 					addBtn.disabled = false;
@@ -137,9 +179,113 @@
 			topic.addEventListener('change', addNote);
 			content.addEventListener('input', addNote);
 
-			addBtn.addEventListener('click', () => {
-				alert('Note added successfully');
+			const showMessage = (message, className) => {
+				alertBox.classList.add('block');
+
+				alertBox.style.background = '#0eadf4';
+				const p = document.createElement('p');
+				const textNode = document.createTextNode(message);
+				p.appendChild(textNode);
+				// alertBox.innerHTML = p;
+				alertBox.appendChild(p);
+				setTimeout(() => {
+					alertBox.classList.remove('block');
+				}, 3000);
+			};
+
+			const fetchData = async url => {
+				const response = await fetch(url);
+				const data = await response.json();
+				return data;
+			};
+
+			const sendRequestToServer = async (url, body, reqMethod) => {
+				const response = await fetch(url, {
+					method: reqMethod,
+					// headers: {
+					// 	Accept: 'application/json',
+					// 	'Content-Type': 'application/json'
+					// },
+					body: JSON.stringify(body)
+				});
+
+				if (response.ok) {
+					const data = response.json();
+					return data;
+				} else {
+					console.log('HTTP-ERROR: ', +response.status);
+				}
+			};
+
+			//POST DATA
+
+			//DELETE NOTE
+			document.getElementById('output').addEventListener('click', evt => {
+				evt.preventDefault();
+
+				const topic = document.getElementById('topic-value').value;
+				let id = document.getElementById('remove');
+				id = id.getAttribute('data-id');
+				const body = {
+					topic,
+					id
+				};
+				if (evt.target.classList.contains('remove')) {
+					evt.target.parentElement.parentElement.remove();
+					const receivedData = sendRequestToServer(
+						`http://localhost:3000/api/notes`,
+						body,
+						'POST'
+					);
+					receivedData
+						.then(data => {
+							console.log(data);
+						})
+						.catch(error => {
+							console.log(error);
+						});
+				}
 			});
+
+			const fetchAllNotes = async () => {
+				const response = await fetch('http://localhost:3000/api/home');
+				if (response.ok) {
+					const data = response.json();
+					return data;
+				} else {
+					console.log('HTTP-ERROR: ', response.status);
+				}
+				const data = await response.json();
+			};
+
+			function displayNotes() {
+				fetchAllNotes()
+					.then(data => {
+						const notes = data.reverse();
+						console.log(notes);
+						let htmlTemplate = '';
+						notes.forEach(function (note) {
+							htmlTemplate += `
+						<div class="card" id="drag1">
+							<div class="card-body">
+								<h4>${note.topic}</h4>
+								<p class="card-text">${note.note.substring(0, 80)}...</p>
+							</div>
+							<div class="card-footer">
+								<input type="hidden" value="${note.topic}" class="" id="topic-value">
+								<a href="#" class="remove" data-id="${note.id}" id="remove">Remove</a>
+										<a href="#editTodo" id="edit" class="edit" data-id="${note.id}">Edit</a>
+										</div>
+									</div>
+				  `;
+						});
+						document.getElementById('output').innerHTML = htmlTemplate;
+					})
+					.catch(error => {
+						return [];
+					});
+			}
+			displayNotes();
 		</script>
 	</body>
 </html>

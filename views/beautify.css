@@ -272,3 +272,83 @@ body {
     max-width: 400px;
     margin: 0 auto;
 }
+
+.output-container {
+    margin-top: 40px;
+    position: relative;
+}
+
+.output li a {
+    text-decoration: none;
+}
+
+
+/* .output p {
+    text-decoration: none;
+} */
+
+.remove {
+    margin-left: auto;
+    margin-right: 12px;
+    color: red;
+}
+
+.output-flex {
+    width: 100%;
+    max-width: 500px;
+    /* min-height: 400px; */
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+
+.card {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #d6d9dc;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    position: relative;
+}
+
+.card h4 {
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #0eadf4;
+}
+
+.card p {
+    font-size: 1.4rem;
+}
+
+.alert {
+    width: 100%;
+    position: fixed;
+    top: -50px;
+}
+
+.alert-box {
+    width: 90%;
+    max-width: 300px;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.25, 0.1, 0.46, 0.99);
+}
+
+.alert-box p {
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.alert-box.block {
+    transform: translateY(95px);
+}
