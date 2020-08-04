@@ -139,11 +139,7 @@
 					topic: topic.value
 				};
 
-				const data = sendRequestToServer(
-					`http://localhost:3000/`,
-					body,
-					'POST'
-				);
+				const data = sendRequestToServer('/', body, 'POST');
 				data
 					.then(response => {
 						displayNotes(response);
