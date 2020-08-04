@@ -117,6 +117,7 @@
 				<div class="alert-box" id="alert-box"></div>
 			</div>
 		</div>
+		<div hidden class="spinner" id="spinner"></div>
 		<!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
 		etnecessitatibus quod. Possimus saepe beatae nihil tempora officiis,
 		deleniti sapiente atque cum modi consequatur, ea libero hic dolorum Lorem
@@ -131,9 +132,11 @@
 			const content = document.getElementById('note');
 			const topic = document.getElementById('topic');
 			const alertBox = document.getElementById('alert-box');
+			const spinner = document.getElementById('spinner');
 
 			form.addEventListener('submit', evt => {
 				evt.preventDefault();
+				spinner.removeAttribute('hidden');
 				const body = {
 					note: note.value,
 					topic: topic.value
@@ -142,8 +145,9 @@
 				const data = sendRequestToServer('/', body, 'POST');
 				data
 					.then(response => {
+						spinner.setAttribute('hidden', '');
 						displayNotes(response);
-						showMessage('Note added successfully', 'success');
+						showAlertMessage('Note added successfully', 'success');
 					})
 					.catch(error => {
 						console.log(error);
@@ -156,7 +160,7 @@
 			const addNote = evt => {
 				if (
 					content.value !== '' &&
-					content.value.length > 2 &&
+					content.value.length > 20 &&
 					topic.value !== 'select'
 				) {
 					addBtn.disabled = false;
@@ -171,7 +175,7 @@
 			topic.addEventListener('change', addNote);
 			content.addEventListener('input', addNote);
 
-			const showMessage = (message, className) => {
+			const showAlertMessage = (message, className) => {
 				alertBox.classList.add('block');
 
 				alertBox.style.background = '#0eadf4';
@@ -213,6 +217,7 @@
 
 			//DELETE NOTE
 			document.getElementById('output').addEventListener('click', evt => {
+				spinner.removeAttribute('hidden');
 				evt.preventDefault();
 
 				const topic = document.getElementById('topic-value').value;
@@ -228,6 +233,7 @@
 					receivedData
 						.then(data => {
 							console.log(data);
+							spinner.setAttribute('hidden', '');
 						})
 						.catch(error => {
 							console.log(error);
@@ -236,6 +242,7 @@
 			});
 
 			const fetchAllNotes = async () => {
+				spinner.removeAttribute('hidden');
 				const response = await fetch('/api/home');
 				if (response.ok) {
 					const data = response.json();
@@ -250,7 +257,7 @@
 				fetchAllNotes()
 					.then(data => {
 						const notes = data.reverse();
-						console.log(notes);
+						spinner.setAttribute('hidden', '');
 						let htmlTemplate = '';
 						notes.forEach(function (note) {
 							htmlTemplate += `
