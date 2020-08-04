@@ -194,10 +194,10 @@
 			const sendRequestToServer = async (url, body, reqMethod) => {
 				const response = await fetch(url, {
 					method: reqMethod,
-					// headers: {
-					// 	Accept: 'application/json',
-					// 	'Content-Type': 'application/json'
-					// },
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
 					body: JSON.stringify(body)
 				});
 
@@ -224,11 +224,7 @@
 				};
 				if (evt.target.classList.contains('remove')) {
 					evt.target.parentElement.parentElement.remove();
-					const receivedData = sendRequestToServer(
-						`http://localhost:3000/api/notes`,
-						body,
-						'POST'
-					);
+					const receivedData = sendRequestToServer(`/api/notes`, body, 'POST');
 					receivedData
 						.then(data => {
 							console.log(data);
@@ -240,7 +236,7 @@
 			});
 
 			const fetchAllNotes = async () => {
-				const response = await fetch('http://localhost:3000/api/home');
+				const response = await fetch('/api/home');
 				if (response.ok) {
 					const data = response.json();
 					return data;
