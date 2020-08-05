@@ -33,19 +33,13 @@
 					</div>
 					<ul class="nav-link">
 						<li>
-							<a href="#work" style="color: #fff;" disabled>
-								work
-							</a>
+							<a style="color: #fff;"> </a>
 						</li>
 						<li>
-							<a href="#study" style="color: #fff;">
-								Study
-							</a>
+							<a style="color: #fff;"> </a>
 						</li>
 						<li>
-							<a href="#personal" style="color: #fff;">
-								Personal
-							</a>
+							<a style="color: #fff;"> </a>
 						</li>
 					</ul>
 				</div>
@@ -114,7 +108,9 @@
 
 		<div class="alert">
 			<div class="container">
-				<div class="alert-box" id="alert-box"></div>
+				<div class="alert-box" id="alert-box">
+					<p></p>
+				</div>
 			</div>
 		</div>
 		<div hidden class="spinner" id="spinner"></div>
@@ -145,7 +141,6 @@
 				const data = sendRequestToServer('/', body, 'POST');
 				data
 					.then(response => {
-						console.log(response);
 						spinner.setAttribute('hidden', '');
 						displayNotes(response);
 						showAlertMessage('Note added successfully', 'success');
@@ -179,15 +174,12 @@
 
 			const showAlertMessage = (message, className) => {
 				alertBox.classList.add('block');
-
 				alertBox.style.background = '#0eadf4';
-				const p = document.createElement('p');
-				const textNode = document.createTextNode(message);
-				p.appendChild(textNode);
-				alertBox.innerHTML = p;
-				// alertBox.appendChild(p);
+				console.log(message);
+				alertBox.innerHTML = `<p>${message}</p>`;
 				setTimeout(() => {
 					alertBox.classList.remove('block');
+					alertBox.innerHTML = '';
 				}, 3000);
 			};
 
@@ -209,7 +201,6 @@
 
 				if (response.ok) {
 					const data = response.json();
-					console.log(data);
 					return data;
 				} else {
 					// console.log('HTTP-ERROR: ', +response.status);
