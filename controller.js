@@ -31,7 +31,6 @@ module.exports = http.createServer((req, res) => {
 				topic: topic,
 				id: topic + '-' + Math.floor(Math.random() * 57876547 + 1)
 			};
-			console.log(newData);
 
 			if (newData.topic === 'work') {
 				helper(req, res, newData, 'work');

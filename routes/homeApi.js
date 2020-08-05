@@ -46,7 +46,6 @@ function deleteNote(topic, id) {
 		if (JSON.parse(data).length === 1) {
 			fs.rmdir(`./${topic}`, { recursive: true }, error => {
 				if (error) {
-					return false;
 				}
 			});
 		} else {
@@ -64,7 +63,7 @@ function deleteNote(topic, id) {
 					JSON.stringify(newData),
 					(error, file) => {
 						if (error) return false;
-						serveStaticFile(res, '/api/api.json', 'application/json', 200);
+						// serveStaticFile(res, '/api/api.json', 'application/json', 200);
 					}
 				);
 			});
@@ -109,8 +108,6 @@ exports.crudOperation = (req, res) => {
 	req.on('end', () => {
 		body = Buffer.concat(body).toString();
 		const { topic, id } = JSON.parse(body);
-
-		console.log(topic, id);
 		if (topic === 'study') {
 			deleteNote(topic, id);
 		} else if (topic === 'work') {

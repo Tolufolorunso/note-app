@@ -5,7 +5,6 @@ const fsPath = require('fs-path');
 const { serveStaticFile } = require('./service.js');
 
 module.exports.helper = (req, res, newData, topic) => {
-	console.log(newData);
 	let oldFile;
 	fs.open(`./${topic}/${topic}.json`, (error, fd) => {
 		if (error) {
@@ -24,7 +23,7 @@ module.exports.helper = (req, res, newData, topic) => {
 			oldFile = JSON.parse(data);
 			oldFile.push(newData);
 		} catch (error) {
-			console.log('file not found');
+			return false;
 		}
 
 		fs.writeFile(
@@ -32,7 +31,7 @@ module.exports.helper = (req, res, newData, topic) => {
 			JSON.stringify(oldFile),
 			(error, file) => {
 				if (error) {
-					throw Error;
+					return false;
 				}
 				// res.statusCode = 200;
 				// res.setHeader('Content-Type', 'application/json');
