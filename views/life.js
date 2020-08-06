@@ -7,6 +7,11 @@ const spinner = document.getElementById('spinner');
 const cancelBtn = document.getElementById('cancel');
 const editId = document.getElementById('id');
 const timeCreated = document.getElementById('time-created');
+const allNotes = document.getElementById('all-note');
+const back = document.getElementById('back');
+const noteContainer = document.getElementById('note-container')
+
+
 
 
 function eventListener() {
@@ -17,7 +22,11 @@ function eventListener() {
   cancelBtn.addEventListener('click', cancelUpdate);
   document.getElementById('output').addEventListener('click', deleteNote);
   document.getElementById('output').addEventListener('click', editAndUpdate);
+  document.getElementById('output').addEventListener('click', getSingleNote);
+  back.addEventListener('click', goBackToNotes)
 }
+
+
 
 // @desc show alert
 const showAlertMessage = (message, className) => {
@@ -29,6 +38,15 @@ const showAlertMessage = (message, className) => {
     alertBox.innerHTML = '';
   }, 1500);
 };
+
+const goBackToNotes = () => {
+  noteContainer.style.display = 'none';
+  allNotes.style.display = 'block';
+
+  displayNotes();
+  back.style.display = 'none';
+  console.log('back')
+}
 
 
 // @desc        This is for adding new note or updating existing one
@@ -72,10 +90,10 @@ const addNote = evt => {
       .catch(error => {
         return false;
       });
-    document.getElementById('note-content').textContent = body.note;   
-    document.getElementById('note-topic').textContent = body.topic;    
+    document.getElementById('note-content').textContent = body.note;
+    document.getElementById('note-topic').textContent = body.topic;
     document.getElementById('edit').setAttribute('data-id', body.id);
-    document.getElementById('topic-value').value =  body.topic;
+    document.getElementById('topic-value').value = body.topic;
 
 
     console.log(body)
@@ -158,7 +176,7 @@ const displayNoteToEdit = data => {
   document.getElementById('time-created').value = timeCreated;
 };
 
-function changeState(state) {
+const changeState = (state) => {
   if (state === 'edit') {
     addBtn.style.background = 'orange';
     addBtn.style.color = '#fff';
@@ -175,7 +193,7 @@ function changeState(state) {
 }
 
 
-function cancelUpdate(evt) {
+const cancelUpdate = (evt) => {
   if (evt.target.classList.contains('cancel')) {
     addBtn.classList.remove('update');
     addBtn.classList.add('add');
@@ -184,11 +202,42 @@ function cancelUpdate(evt) {
   }
 }
 
-function clearFields() {
+const clearFields = () => {
   content.value = '';
   topic.value = 'select';
   editId.value = '';
   timeCreated.value = '';
+}
+
+
+const displaySingleNote = (note) => {
+  let htmlTemplate = `
+        <h2>${note.topic}</h2>
+        <p>
+          ${note.note}
+        </p>
+        `;
+  document.getElementById('single-output').innerHTML = htmlTemplate;
+}
+
+
+//Get note to display
+// @desc        Get note
+// @route       Get note
+const getSingleNote = (evt) => {
+  if (evt.target.classList.contains('heading')) {
+    allNotes.style.display = 'none';
+    back.style.display = 'block';
+    noteContainer.style.display = 'block';
+
+    const id = evt.target.getAttribute('data-id');
+    fetchAllNotes()
+      .then(data => {
+        let note = data.find(i => i.id === id);
+        displaySingleNote(note)
+      })
+      .catch(error => console.log(error));
+  }
 }
 
 //EDIT AND UPDATE
@@ -204,7 +253,7 @@ const editAndUpdate = evt => {
     content.focus();
     changeState('edit');
     topic.setAttribute('disabled', '')
-    
+
     const id = evt.target.getAttribute('data-id');
     fetchAllNotes()
       .then(data => {
@@ -222,6 +271,10 @@ const deleteNote = evt => {
   evt.preventDefault()
   if (evt.target.classList.contains('remove')) {
     evt.target.parentElement.parentElement.remove();
+//    if(!output){
+//   }
+       console.log('line 29 ', output.length)
+
     let body = {
       id: evt.target.dataset.id,
       topic: evt.target.previousElementSibling.value
@@ -239,12 +292,17 @@ const deleteNote = evt => {
 
 
 const htmlTemplate = notes => {
+  if (!notes.length) {
+    document.getElementById('message').style.display = 'block'
+  } else {
+    document.getElementById('message').style.display = 'none'
+  }
   let htmlTemplate = '';
   notes.forEach(function (note) {
     htmlTemplate += `
 			<div class="card" id="note-item">
-				<div class="card-body">
-					<h4 id="note-topic">${note.topic}</h4>
+                <div class="card-body" id="card-body">
+					<h4 id="note-topic" class="heading" data-id="${note.id}">${note.topic}</h4>
 					<p class="card-text" id="note-content" style="width:100%">${note.note.substring(0, 80)}...</p>
 				</div>
                 <div class="card-footer">
