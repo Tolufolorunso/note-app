@@ -245,7 +245,7 @@ const htmlTemplate = notes => {
 			<div class="card" id="note-item">
 				<div class="card-body">
 					<h4 id="note-topic">${note.topic}</h4>
-					<p class="card-text" id="note-content">${note.note.substring(0, 80)}...</p>
+					<p class="card-text" id="note-content" style="width:100%">${note.note.substring(0, 80)}...</p>
 				</div>
                 <div class="card-footer">
 				    <input type="hidden" value="${note.topic}" class="" id="topic-value">
