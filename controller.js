@@ -29,7 +29,8 @@ module.exports = http.createServer((req, res) => {
 			const newData = {
 				note: note,
 				topic: topic,
-				id: topic + '-' + Math.floor(Math.random() * 57876547 + 1)
+				id: topic + '-' + Math.floor(Math.random() * 57876547 + 1),
+				timeCreated: new Date().getTime()
 			};
 
 			if (newData.topic === 'work') {
@@ -45,14 +46,18 @@ module.exports = http.createServer((req, res) => {
 		homeApi(req, res);
 	} else if (req.url == '/api/notes' && req.method === 'POST') {
 		crudOperation(req, res);
+	} else if (req.url == '/api/notes' && req.method === 'PATCH') {
+		crudOperation(req, res);
 	} else if (req.url == '/work' && req.method === 'GET') {
 		work(req, res);
 	} else if (req.url == '/study' && req.method === 'GET') {
 		study(req, res);
 	} else if (req.url == '/personal' && req.method === 'GET') {
 		personal(req, res);
-	} else if ('/beautify.css') {
+	} else if (req.url == '/beautify.css' && req.method === 'GET') {
 		serveStaticFile(res, '/views/beautify.css', 'text/css');
+	} else if (req.url == '/life.js' && req.method === 'GET') {
+		serveStaticFile(res, '/views/life.js', 'text/js');
 	} else {
 		res.writeHead(404, { 'Content-Type': 'text/html' });
 		res.end('<h2>Page not found</h2>');

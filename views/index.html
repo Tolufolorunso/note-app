@@ -67,7 +67,20 @@
 								<option value="work">work</option>
 							</select>
 						</div>
-						<button type="submit" class="btn add-btn" id="add-button" disabled>
+						<input type="hidden" value="" class="" id="id" />
+						<input type="hidden" value="" class="" id="time-created" />
+						<input
+							type="hidden"
+							value="Cancel"
+							class="btn cancel"
+							id="cancel"
+						/>
+						<button
+							type="submit"
+							class="btn add-btn add"
+							id="add-button"
+							disabled
+						>
 							Add
 						</button>
 					</div>
@@ -122,157 +135,6 @@
 		cum modi consequatur, ea libero hic dolorum accusamus nostrum. accusamus
 		nostrum. -->
 
-		<script>
-			const form = document.getElementById('form');
-			const addBtn = document.getElementById('add-button');
-			const content = document.getElementById('note');
-			const topic = document.getElementById('topic');
-			const alertBox = document.getElementById('alert-box');
-			const spinner = document.getElementById('spinner');
-
-			form.addEventListener('submit', evt => {
-				evt.preventDefault();
-				spinner.removeAttribute('hidden');
-				const body = {
-					note: note.value,
-					topic: topic.value
-				};
-
-				const data = sendRequestToServer('/', body, 'POST');
-				data
-					.then(response => {
-						spinner.setAttribute('hidden', '');
-						displayNotes(response);
-						showAlertMessage('Note added successfully', 'success');
-					})
-					.catch(error => {
-						// console.log(error);
-						return false;
-					});
-				note.value = '';
-				addBtn.disabled = true;
-				addBtn.style.background = 'gray';
-			});
-
-			const addNote = evt => {
-				if (
-					content.value !== '' &&
-					content.value.length > 20 &&
-					topic.value !== 'select'
-				) {
-					addBtn.disabled = false;
-					addBtn.style.background = '#0eadf4';
-					addBtn.style.cursor = 'pointer';
-				} else {
-					evt.preventDefault();
-					addBtn.disabled = true;
-					addBtn.style.background = 'gray';
-				}
-			};
-			topic.addEventListener('change', addNote);
-			content.addEventListener('input', addNote);
-
-			const showAlertMessage = (message, className) => {
-				alertBox.classList.add('block');
-				alertBox.style.background = '#0eadf4';
-				console.log(message);
-				alertBox.innerHTML = `<p>${message}</p>`;
-				setTimeout(() => {
-					alertBox.classList.remove('block');
-					alertBox.innerHTML = '';
-				}, 3000);
-			};
-
-			const fetchData = async url => {
-				const response = await fetch(url);
-				const data = await response.json();
-				return data;
-			};
-
-			const sendRequestToServer = async (url, body, reqMethod) => {
-				const response = await fetch(url, {
-					method: reqMethod,
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(body)
-				});
-
-				if (response.ok) {
-					const data = response.json();
-					return data;
-				} else {
-					// console.log('HTTP-ERROR: ', +response.status);
-					return false;
-				}
-			};
-
-			//POST DATA
-
-			//DELETE NOTE
-			document.getElementById('output').addEventListener('click', evt => {
-				evt.preventDefault();
-
-				const topic = document.getElementById('topic-value').value;
-				let id = document.getElementById('remove');
-				id = id.getAttribute('data-id');
-				const body = {
-					topic,
-					id
-				};
-				if (evt.target.classList.contains('remove')) {
-					evt.target.parentElement.parentElement.remove();
-					const receivedData = sendRequestToServer(`/api/notes`, body, 'POST');
-					receivedData
-						.then(data => {
-							// spinner.setAttribute('hidden', '');
-						})
-						.catch(error => {});
-				}
-			});
-
-			const fetchAllNotes = async () => {
-				// spinner.removeAttribute('hidden');
-				const response = await fetch('/api/home');
-				if (response.ok) {
-					const data = response.json();
-					return data;
-				} else {
-					// console.log('HTTP-ERROR: ', response.status);
-					return false;
-				}
-				const data = await response.json();
-			};
-
-			function displayNotes() {
-				fetchAllNotes()
-					.then(data => {
-						const notes = data.reverse();
-						// spinner.setAttribute('hidden', '');
-						let htmlTemplate = '';
-						notes.forEach(function (note) {
-							htmlTemplate += `
-						<div class="card" id="drag1">
-							<div class="card-body">
-								<h4>${note.topic}</h4>
-								<p class="card-text">${note.note.substring(0, 80)}...</p>
-							</div>
-							<div class="card-footer">
-								<input type="hidden" value="${note.topic}" class="" id="topic-value">
-								<a href="#" class="remove" data-id="${note.id}" id="remove">Remove</a>
-										<a href="#editTodo" id="edit" class="edit" data-id="${note.id}">Edit</a>
-										</div>
-									</div>
-				  `;
-						});
-						document.getElementById('output').innerHTML = htmlTemplate;
-					})
-					.catch(error => {
-						return [];
-					});
-			}
-			displayNotes();
-		</script>
+		<script src="/life.js"></script>
 	</body>
 </html>
