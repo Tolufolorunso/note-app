@@ -58,6 +58,8 @@ const addNote = evt => {
       .catch(error => {
         return false;
       });
+    clearFields();
+    changeState('add');
   } else {
 
     //    update existing note
