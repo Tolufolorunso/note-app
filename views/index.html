@@ -4,130 +4,112 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
-	<!--<![endif]-->
+<!--<![endif]-->
 
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>Note App</title>
-		<meta name="description" content="" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="./beautify.css" />
-	</head>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Note App</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./beautify.css" />
+</head>
 
-	<body id="editTodo">
-		<!--[if lt IE 7]>
+<body id="editTodo">
+  <!--[if lt IE 7]>
 			<p class="browsehappy">
 				You are using an <strong>outdated</strong> browser. Please
 				<a href="#">upgrade your browser</a> to improve your experience.
 			</p>
 		<![endif]-->
-		<!-- <div class="menu" id="menu">
+  <!-- <div class="menu" id="menu">
         <i class="fa fa-bars"></i>
     </div> -->
-		<nav class="nav" id="main">
-			<div class="container">
-				<div class="nav-content">
-					<div class="logo-box">
-						<a href="#" class="logo" id="home">Note Api</a>
-					</div>
-					<ul class="nav-link">
-						<li>
-							<a style="color: #fff;"> </a>
-						</li>
-						<li>
-							<a style="color: #fff;"> </a>
-						</li>
-						<li>
-							<a style="color: #fff;"> </a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-		<!-- <button href="#" class="clear" id="clear">Clear</button> -->
-		<div class="form-container">
-			<div class="container">
-				<form class="form-tag" id="form">
-					<div class="form-group">
-						<textarea
-							name="note"
-							cols="70"
-							rows="7"
-							id="note"
-							placeholder="Your Note"
-						></textarea>
-					</div>
-					<div class="select-btn">
-						<div class="form-group select-option">
-							<select name="topic" id="topic">
-								<option value="select" disabled selected>Select topic</option>
-								<option value="personal">Personal</option>
-								<option value="study">Study</option>
-								<option value="work">work</option>
-							</select>
-						</div>
-						<input type="hidden" value="" class="" id="id" />
-						<input type="hidden" value="" class="" id="time-created" />
-						<input
-							type="hidden"
-							value="Cancel"
-							class="btn cancel"
-							id="cancel"
-						/>
-						<button
-							type="submit"
-							class="btn add-btn add"
-							id="add-button"
-							disabled
-						>
-							Add
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
+  <nav class="nav" id="main">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo-box">
+          <a href="#" class="logo" id="home">Note Api</a>
+        </div>
+        <ul class="nav-link">
+          <li>
+            <a style="color: #fff;"> </a>
+          </li>
+          <li>
+            <a style="color: #fff;"> </a>
+          </li>
+          <li>
+            <a style="color: #fff;"> </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- <button href="#" class="clear" id="clear">Clear</button> -->
+  <div class="form-container">
+    <div class="container">
+      <form class="form-tag" id="form">
+        <div class="form-group">
+          <textarea name="note" cols="70" rows="7" id="note" placeholder="Your Note"></textarea>
+        </div>
+        <div class="select-btn">
+          <div class="form-group select-option">
+            <select name="topic" id="topic">
+              <option value="select" disabled selected>Select topic</option>
+              <option value="personal">Personal</option>
+              <option value="study">Study</option>
+              <option value="work">work</option>
+            </select>
+          </div>
+          <input type="hidden" value="" class="" id="id" />
+          <input type="hidden" value="" class="" id="time-created" />
+          <input type="hidden" value="Cancel" class="btn cancel" id="cancel" />
+          <button type="submit" class="btn add-btn add" id="add-button" disabled>
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-		<div class="output-container">
-			<div class="container">
-				<div class="output-flex">
-					<p>Write notes</p>
-					<div id="output"></div>
-				</div>
-			</div>
-		</div>
+  <div class="output-container">
+    <div class="container">
+      <div class="output-flex">
+        <p>Write notes</p>
+        <div id="output"></div>
+      </div>
+    </div>
+  </div>
 
-		<div class="message">
-			<div class="container">
-				<h2>About the app</h2>
-				<p>
-					This app was built using vanilla nodejs. No frameworks like express or
-					hapi was used. You can only add note when you have typed more than 20
-					characters long and selected topic.
-				</p>
-			</div>
-		</div>
+  <div class="message">
+    <div class="container">
+      <h2>About the app</h2>
+      <p>
+        This app was built using vanilla nodejs. No frameworks like express or
+        hapi was used. You can only add note when you have typed more than 20
+        characters long and selected topic.
+      </p>
+    </div>
+  </div>
 
-		<footer class="footer">
-			<div class="container">
-				<p>
-					Copyright <span id="get-year">2020</span> | Coded by
-					<a href="twitter.com/developer_tolu" style="color: #fff;"
-						>Folorunso Tolulope</a
-					>
-				</p>
-			</div>
-		</footer>
+  <footer class="footer">
+    <div class="container">
+      <p>
+        Copyright <span id="get-year">2020</span> | Coded by
+        <a href="twitter.com/developer_tolu" style="color: #fff;">Folorunso Tolulope</a>
+      </p>
+    </div>
+  </footer>
 
-		<div class="alert">
-			<div class="container">
-				<div class="alert-box" id="alert-box">
-					<p></p>
-				</div>
-			</div>
-		</div>
-		<div hidden class="spinner" id="spinner"></div>
-		<!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
+  <div class="alert">
+    <div class="container">
+      <div class="alert-box" id="alert-box">
+        <p></p>
+      </div>
+    </div>
+  </div>
+  <div hidden class="spinner" id="spinner"></div>
+  <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
 		etnecessitatibus quod. Possimus saepe beatae nihil tempora officiis,
 		deleniti sapiente atque cum modi consequatur, ea libero hic dolorum Lorem
 		ipsum dolor sit amet consectetur adipisicing elit. Ipsam etnecessitatibus
@@ -135,6 +117,7 @@
 		cum modi consequatur, ea libero hic dolorum accusamus nostrum. accusamus
 		nostrum. -->
 
-		<script src="/life.js"></script>
-	</body>
+  <script src="/life.js"></script>
+</body>
+
 </html>

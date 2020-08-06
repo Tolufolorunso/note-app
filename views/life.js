@@ -8,7 +8,32 @@ const cancelBtn = document.getElementById('cancel');
 const editId = document.getElementById('id');
 const timeCreated = document.getElementById('time-created');
 
-form.addEventListener('submit', evt => {
+
+function eventListener() {
+  displayNotes();
+  form.addEventListener("submit", addNote);
+  topic.addEventListener('change', addNoteInput);
+  content.addEventListener('input', addNoteInput);
+  cancelBtn.addEventListener('click', cancelUpdate);
+  document.getElementById('output').addEventListener('click', deleteNote);
+  document.getElementById('output').addEventListener('click', editAndUpdate);
+}
+
+// @desc show alert
+const showAlertMessage = (message, className) => {
+  alertBox.classList.add('block');
+  alertBox.style.background = '#0eadf4';
+  alertBox.innerHTML = `<p>${message}</p>`;
+  setTimeout(() => {
+    alertBox.classList.remove('block');
+    alertBox.innerHTML = '';
+  }, 1500);
+};
+
+
+// @desc        This is for adding new note or updating existing one
+// @route       POST and PATCH /api/notes
+const addNote = evt => {
   if (addBtn.classList.contains('update')) {
     addBtn.classList.remove('update');
     addBtn.classList.add('add');
@@ -22,13 +47,11 @@ form.addEventListener('submit', evt => {
   };
 
   if (editId.value === '') {
-    console.log('post');
-
-    spinner.removeAttribute('hidden');
+    //    spinner.removeAttribute('hidden');
     const data = sendRequestToServer('/', body, 'POST');
     data
       .then(response => {
-        spinner.setAttribute('hidden', '');
+        //        spinner.setAttribute('hidden', '');
         displayNotes();
         showAlertMessage('Note added successfully', 'success');
       })
@@ -36,26 +59,26 @@ form.addEventListener('submit', evt => {
         return false;
       });
   } else {
+
+    //    update existing note
     body.id = editId.value;
     body.timeCreated = timeCreated.value;
-    const data = sendRequestToServer('/api/notes', body, 'PATCH');
-    data
+    sendRequestToServer('/api/notes', body, 'PATCH')
       .then(response => {
-        // spinner.setAttribute('hidden', '');
-        showAlertMessage('Note updated successfully', 'success');
+        console.log('update', response)
       })
       .catch(error => {
-        // console.log(error);
         return false;
       });
+    showAlertMessage('Note updated successfully', 'success');
   }
 
   note.value = '';
   addBtn.disabled = true;
   addBtn.style.background = 'gray';
-});
+}
 
-const addNote = evt => {
+const addNoteInput = evt => {
   if (
     content.value !== '' &&
     content.value.length > 20 &&
@@ -71,24 +94,24 @@ const addNote = evt => {
     addBtn.style.cursor = '';
   }
 };
-topic.addEventListener('change', addNote);
-content.addEventListener('input', addNote);
 
-const showAlertMessage = (message, className) => {
-  alertBox.classList.add('block');
-  alertBox.style.background = '#0eadf4';
-  alertBox.innerHTML = `<p>${message}</p>`;
-  setTimeout(() => {
-    alertBox.classList.remove('block');
-    alertBox.innerHTML = '';
-  }, 1500);
+
+const fetchAllNotes = async () => {
+  const response = await fetch('/api/home');
+  if (response.ok) {
+    const data = response.json();
+    return data;
+  } else {
+    // console.log('HTTP-ERROR: ', response.status);
+    return false;
+  }
 };
 
-const fetchData = async url => {
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
-};
+//const fetchData = async url => {
+//  const response = await fetch(url);
+//  const data = await response.json();
+//  return data;
+//};
 
 const sendRequestToServer = async (url, body, reqMethod) => {
   const response = await fetch(url, {
@@ -105,8 +128,7 @@ const sendRequestToServer = async (url, body, reqMethod) => {
     console.log(data)
     return data;
   } else {
-    // console.log('HTTP-ERROR: ', +response.status);
-    return false;
+     console.log('HTTP-ERROR: ', +response.status);
   }
 };
 
@@ -118,6 +140,7 @@ const displayNoteToEdit = data => {
     topic,
     timeCreated
   } = data;
+
   content.value = note;
   topicUI.value = topic;
   editId.value = id;
@@ -140,7 +163,6 @@ function changeState(state) {
   }
 }
 
-cancelBtn.addEventListener('click', cancelUpdate);
 
 function cancelUpdate(evt) {
   if (evt.target.classList.contains('cancel')) {
@@ -158,8 +180,10 @@ function clearFields() {
   timeCreated.value = '';
 }
 
-//Edit and Update
-document.getElementById('output').addEventListener('click', evt => {
+//EDIT AND UPDATE
+// @desc        Update note
+// @route       Patch /api/notes
+const editAndUpdate = evt => {
   if (addBtn.classList.contains('add')) {
     addBtn.classList.add('update');
     addBtn.classList.remove('add');
@@ -176,10 +200,12 @@ document.getElementById('output').addEventListener('click', evt => {
       })
       .catch(error => console.log(error));
   }
-});
+}
 
 //DELETE NOTE
-document.getElementById('output').addEventListener('click', evt => {
+// @desc        Deleting note
+// @route       DELETE /api/notes
+const deleteNote = evt => {
   evt.preventDefault()
   if (evt.target.classList.contains('remove')) {
     evt.target.parentElement.parentElement.remove();
@@ -195,20 +221,9 @@ document.getElementById('output').addEventListener('click', evt => {
     })
 
   }
-});
+}
 
-const fetchAllNotes = async () => {
-  // spinner.removeAttribute('hidden');
-  const response = await fetch('/api/home');
-  if (response.ok) {
-    const data = response.json();
-    return data;
-  } else {
-    // console.log('HTTP-ERROR: ', response.status);
-    return false;
-  }
-  // const data = await response.json();
-};
+
 
 const htmlTemplate = notes => {
   let htmlTemplate = '';
@@ -232,17 +247,19 @@ const htmlTemplate = notes => {
 
 function displayNotes(data) {
   if (data) {
-    console.log(data);
+    console.log('line 262', data);
   } else {
+    spinner.removeAttribute('hidden');
     fetchAllNotes()
       .then(data => {
         data = data.sort((b, a) => a.timeCreated - b.timeCreated);
         const notes = data;
         htmlTemplate(notes);
+        spinner.setAttribute('hidden', '');
       })
       .catch(error => {
         return [];
       });
   }
 }
-displayNotes();
+eventListener()
