@@ -89,6 +89,8 @@ body {
 
 .output-container {
   margin-top: 40px;
+  margin-bottom: 40px;
+
   position: relative;
 }
 
@@ -215,8 +217,14 @@ body {
 
 .cancel {
   background: red;
-  padding: 0 5px;
+  padding: 0 10px;
 }
+
+.update {
+  padding: 0 10px;
+}
+
+
 
 .footer {
   background: #072c3d;
@@ -398,6 +406,9 @@ body {
   }
 }
 
+.note-container {
+  margin-bottom: 80px;
+}
 
 .single-note {
   margin-top: 40px;
@@ -418,9 +429,20 @@ body {
 
 .single-note p {
   padding-top: 10px;
-  font-size: 1.5rem
+  font-size: 1.5rem;
 }
 
 #back {
-  display: 'none';
+  display: none;
+}
+
+.heading {
+  text-decoration: underline;
+  font-style: italic;
+  transition: all 0.2s cubic-bezier(0.25, 0.1, 0.46, 0.99);
+}
+
+.heading:hover {
+  color: rgba(14, 173, 244, 0.8);
+  text-decoration: none;
 }

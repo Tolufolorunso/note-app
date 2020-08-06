@@ -72,8 +72,8 @@ const updateNote = (note, topic, id, timeCreated) => {
   fs.writeFile(`./${topic}/${topic}.json`, JSON.stringify(newUpdatedNotes), (error, file) => {
     if (error) return false;
   });
-  
-    console.log(newUpdatedNotes);
+
+  console.log(newUpdatedNotes);
 };
 
 exports.homeApi = (req, res) => {

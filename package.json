@@ -1,17 +1,17 @@
 {
-	"name": "simple-server",
-	"version": "1.0.0",
-	"description": "simple server without using any framework",
-	"main": "app.js",
-	"scripts": {
-		"start": "node app.js"
-	},
-	"author": "Tolulope Folorunso",
-	"license": "ISC",
-	"dependencies": {
-		"fs-path": "0.0.24"
-	},
-	"engines": {
-		"node": ">=10.0.0"
-	}
+  "name": "simple-server",
+  "version": "1.0.0",
+  "description": "simple server without using any framework",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Tolulope Folorunso",
+  "license": "ISC",
+  "dependencies": {
+    "fs-path": "0.0.24"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
 }

@@ -45,7 +45,6 @@ const goBackToNotes = () => {
 
   displayNotes();
   back.style.display = 'none';
-  console.log('back')
 }
 
 
@@ -94,9 +93,6 @@ const addNote = evt => {
     document.getElementById('note-topic').textContent = body.topic;
     document.getElementById('edit').setAttribute('data-id', body.id);
     document.getElementById('topic-value').value = body.topic;
-
-
-    console.log(body)
     showAlertMessage('Note updated successfully', 'success');
     clearFields();
     changeState('add');
@@ -154,7 +150,6 @@ const sendRequestToServer = async (url, body, reqMethod) => {
 
   if (response.ok) {
     const data = response.json();
-    console.log(data)
     return data;
   } else {
     console.log('HTTP-ERROR: ', +response.status);
@@ -252,7 +247,7 @@ const editAndUpdate = evt => {
   if (evt.target.classList.contains('edit')) {
     content.focus();
     changeState('edit');
-    topic.setAttribute('disabled', '')
+    topic.setAttribute('disabled', '');
 
     const id = evt.target.getAttribute('data-id');
     fetchAllNotes()
@@ -271,9 +266,9 @@ const deleteNote = evt => {
   evt.preventDefault()
   if (evt.target.classList.contains('remove')) {
     evt.target.parentElement.parentElement.remove();
-//    if(!output){
-//   }
-       console.log('line 29 ', output.length)
+    if (!document.getElementById('note-item')) {
+      document.getElementById('message').style.display = 'block'
+    }
 
     let body = {
       id: evt.target.dataset.id,
@@ -314,6 +309,7 @@ const htmlTemplate = notes => {
         `;
   });
   document.getElementById('output').innerHTML = htmlTemplate;
+
 };
 
 function displayNotes(data) {
