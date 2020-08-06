@@ -65,14 +65,21 @@ const addNote = evt => {
     body.timeCreated = timeCreated.value;
     sendRequestToServer('/api/notes', body, 'PATCH')
       .then(response => {
-        console.log('update', response)
+        console.log('update', response);
       })
       .catch(error => {
         return false;
       });
+    document.getElementById('note-content').textContent = body.note;   
+    document.getElementById('note-topic').textContent = body.topic;    
+    document.getElementById('edit').setAttribute('data-id', body.id);
+    document.getElementById('topic-value').value =  body.topic;
+
+
+    console.log(body)
     showAlertMessage('Note updated successfully', 'success');
-    clearFields()
-    changeState('add')
+    clearFields();
+    changeState('add');
   }
 
   note.value = '';
@@ -130,7 +137,7 @@ const sendRequestToServer = async (url, body, reqMethod) => {
     console.log(data)
     return data;
   } else {
-     console.log('HTTP-ERROR: ', +response.status);
+    console.log('HTTP-ERROR: ', +response.status);
   }
 };
 
@@ -194,6 +201,8 @@ const editAndUpdate = evt => {
   if (evt.target.classList.contains('edit')) {
     content.focus();
     changeState('edit');
+    topic.setAttribute('disabled', '')
+    
     const id = evt.target.getAttribute('data-id');
     fetchAllNotes()
       .then(data => {
@@ -233,8 +242,8 @@ const htmlTemplate = notes => {
     htmlTemplate += `
 			<div class="card" id="note-item">
 				<div class="card-body">
-					<h4>${note.topic}</h4>
-					<p class="card-text">${note.note.substring(0, 80)}...</p>
+					<h4 id="note-topic">${note.topic}</h4>
+					<p class="card-text" id="note-content">${note.note.substring(0, 80)}...</p>
 				</div>
                 <div class="card-footer">
 				    <input type="hidden" value="${note.topic}" class="" id="topic-value">
