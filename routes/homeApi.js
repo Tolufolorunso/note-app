@@ -52,11 +52,9 @@ function deleteNote(res, topic, id) {
             fs.rmdir(`./${topic}`, {
                 recursive: true
             }, error => {
-                if (error) {}
-                res.writeHead(204, {
-                    'Content-Type': 'application/json'
-                });
-               return res.end([]);
+                if (error) {
+                    console.log('error on line 56', error)
+                }
             });
         } else {
             fs.readFile(`./${topic}/${topic}.json`, 'utf8', (error, data) => {
@@ -151,7 +149,7 @@ exports.crudOperation = (req, res) => {
             note,
             timeCreated
         } = JSON.parse(body);
-        console.log(JSON.parse(body))
+        console.log('body', body)
         if (note) {
             if (topic === 'study') {
                 updateNote(note, topic, id, timeCreated);

@@ -94,7 +94,8 @@ const sendRequestToServer = async (url, body, reqMethod) => {
     const response = await fetch(url, {
         method: reqMethod,
         headers: {
-            'Content-Type': 'text/plain'
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
     });
@@ -190,7 +191,7 @@ document.getElementById('output').addEventListener('click', evt => {
         sendRequestToServer(`/api/notes`, body, 'POST').then(response => {
             console.log('response on line 191: ',response)
         }).catch(error => {
-            console.log('error on line 193: ', error)
+            console.log('error on line 191: ', error)
         })
 
     }
