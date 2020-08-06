@@ -71,6 +71,8 @@ const addNote = evt => {
         return false;
       });
     showAlertMessage('Note updated successfully', 'success');
+    clearFields()
+    changeState('add')
   }
 
   note.value = '';
