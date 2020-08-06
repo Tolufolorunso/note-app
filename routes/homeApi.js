@@ -6,33 +6,6 @@ const {
     parse
 } = require('querystring');
 
-// function work() {
-// 	try {
-// 		const work = fs.readFileSync('./work/work.json', 'utf8');
-// 		const workObj = JSON.parse(work);
-// 		return workObj;
-// 	} catch (error) {
-// 		return [];
-// 	}
-// }
-// function personal() {
-// 	try {
-// 		const personal = fs.readFileSync('./personal/personal.json', 'utf8');
-// 		const personalObj = JSON.parse(personal);
-// 		return personalObj;
-// 	} catch (error) {
-// 		return [];
-// 	}
-// }
-// function study() {
-// 	try {
-// 		const study = fs.readFileSync('./study/study.json', 'utf8');
-// 		const studyObj = JSON.parse(study);
-// 		return studyObj;
-// 	} catch (error) {
-// 		return [];
-// 	}
-// }
 function fetchDataFromTopics(topic) {
     try {
         const data = fs.readFileSync(`./${topic}/${topic}.json`, 'utf8');
