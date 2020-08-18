@@ -16,4 +16,3 @@ Thank You. Folorunso Tolulope.
 For weJapa internship
 
 -- Live at https://wejapa-note-app.herokuapp.com/
-https://git.heroku.com/wejapa-note-app.git
